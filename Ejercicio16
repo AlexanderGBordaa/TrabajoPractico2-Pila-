@@ -1,0 +1,56 @@
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        return None
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+        return None
+
+    def size(self):
+        return len(self.items)
+
+    def get_items(self):
+        return self.items
+
+
+def find_intersection(stack1, stack2):
+    set1 = set(stack1.get_items())
+    set2 = set(stack2.get_items())
+    intersection = set1.intersection(set2)
+    return intersection
+
+
+# Crear las pilas con personajes de los episodios V y VII
+stack_v = Stack()
+stack_v.push("Luke Skywalker")
+stack_v.push("Darth Vader")
+stack_v.push("Han Solo")
+stack_v.push("Leia Organa")
+stack_v.push("Yoda")
+
+stack_vii = Stack()
+stack_vii.push("Han Solo")
+stack_vii.push("Leia Organa")
+stack_vii.push("Luke Skywalker")
+stack_vii.push("Rey")
+stack_vii.push("Kylo Ren")
+
+# Encontrar la intersección
+intersection = find_intersection(stack_v, stack_vii)
+
+# Mostrar los personajes que aparecen en ambos episodios
+print("Personajes en ambos episodios:")
+for character in intersection:
+    print(character)
