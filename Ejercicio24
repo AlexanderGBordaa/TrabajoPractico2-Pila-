@@ -1,0 +1,130 @@
+class Personaje:
+    def __init__(self, nombre, peliculas):
+        self.nombre = nombre
+        self.peliculas = peliculas
+
+
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        return None
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+        return None
+
+    def size(self):
+        return len(self.items)
+
+    def get_items(self):
+        return self.items
+
+
+def posicion_personaje(pila, nombre):
+    temp_stack = Stack()
+    posicion = 1
+    encontrado = False
+    while not pila.is_empty():
+        personaje = pila.pop()
+        if personaje.nombre == nombre:
+            encontrado = True
+            break
+        temp_stack.push(personaje)
+        posicion += 1
+
+    # Restaurar la pila original
+    while not temp_stack.is_empty():
+        pila.push(temp_stack.pop())
+
+    return posicion if encontrado else None
+
+
+# Crear la pila de personajes MCU
+pila_mcu = Stack()
+pila_mcu.push(Personaje("Iron Man", 10))
+pila_mcu.push(Personaje("Thor", 9))
+pila_mcu.push(Personaje("Hulk", 6))
+pila_mcu.push(Personaje("Black Widow", 7))
+pila_mcu.push(Personaje("Rocket Raccoon", 4))
+pila_mcu.push(Personaje("Groot", 4))
+
+pos_rocket = posicion_personaje(pila_mcu, "Rocket Raccoon")
+pos_groot = posicion_personaje(pila_mcu, "Groot")
+
+print(f"Rocket Raccoon se encuentra en la posición: {pos_rocket}")
+print(f"Groot se encuentra en la posición: {pos_groot}")
+
+
+def personajes_mas_de_5_peliculas(pila):
+    temp_stack = Stack()
+    personajes = []
+    while not pila.is_empty():
+        personaje = pila.pop()
+        if personaje.peliculas > 5:
+            personajes.append((personaje.nombre, personaje.peliculas))
+        temp_stack.push(personaje)
+
+    # Restaurar la pila original
+    while not temp_stack.is_empty():
+        pila.push(temp_stack.pop())
+
+    return personajes
+
+
+personajes_5_peliculas = personajes_mas_de_5_peliculas(pila_mcu)
+print("Personajes que participaron en más de 5 películas:")
+for nombre, peliculas in personajes_5_peliculas:
+    print(f"{nombre}: {peliculas} películas")
+
+
+def peliculas_black_widow(pila):
+    temp_stack = Stack()
+    peliculas = 0
+    while not pila.is_empty():
+        personaje = pila.pop()
+        if personaje.nombre == "Black Widow":
+            peliculas = personaje.peliculas
+        temp_stack.push(personaje)
+
+    # Restaurar la pila original
+    while not temp_stack.is_empty():
+        pila.push(temp_stack.pop())
+
+    return peliculas
+
+
+peliculas_viuda_negra = peliculas_black_widow(pila_mcu)
+print(f"Black Widow participó en {peliculas_viuda_negra} películas")
+
+
+def personajes_con_letras(pila, letras):
+    temp_stack = Stack()
+    personajes = []
+    while not pila.is_empty():
+        personaje = pila.pop()
+        if personaje.nombre[0] in letras:
+            personajes.append(personaje.nombre)
+        temp_stack.push(personaje)
+
+    # Restaurar la pila original
+    while not temp_stack.is_empty():
+        pila.push(temp_stack.pop())
+
+    return personajes
+
+
+personajes_letras = personajes_con_letras(pila_mcu, {'C', 'D', 'G'})
+print("Personajes cuyos nombres empiezan con C, D y G:")
+for nombre in personajes_letras:
+    print(nombre)
